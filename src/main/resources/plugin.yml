@@ -1,0 +1,4 @@
+name: DailyQuests
+version: '1.0-SNAPSHOT'
+main: org.elementcraft.dailyQuests.DailyQuests
+api-version: '1.16'
