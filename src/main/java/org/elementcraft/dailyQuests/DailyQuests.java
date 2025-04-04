@@ -1,11 +1,19 @@
 package org.elementcraft.dailyQuests;
 
+import dev.rollczi.litecommands.LiteCommands;
+import dev.rollczi.litecommands.bukkit.LiteBukkitFactory;
+import dev.rollczi.litecommands.bukkit.LiteBukkitMessages;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.elementcraft.dailyQuests.cmd.DailyCommand;
+import org.elementcraft.dailyQuests.gui.MenuListener;
 
 public final class DailyQuests extends JavaPlugin {
     private static DailyQuests instance;
+
+    private LiteCommands<CommandSender> liteCommands;
 
     @Override
     public void onEnable() {
@@ -21,6 +29,12 @@ public final class DailyQuests extends JavaPlugin {
 
         instance = this;
 
+        this.liteCommands = LiteBukkitFactory.builder("DailyQuests")
+                .commands(new DailyCommand())
+                .message(LiteBukkitMessages.PLAYER_ONLY, "&cOnly player can execute this command!")
+                .build();
+
+        getServer().getPluginManager().registerEvents(new MenuListener(), this);
     }
 
     @Override
