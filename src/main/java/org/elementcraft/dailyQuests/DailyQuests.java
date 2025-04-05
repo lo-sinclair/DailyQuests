@@ -11,9 +11,9 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.elementcraft.dailyQuests.cmd.DailyCommand;
 import org.elementcraft.dailyQuests.gui.MenuListener;
-import org.elementcraft.dailyQuests.quest.QuestManager;
-import org.elementcraft.dailyQuests.quest.quests.BreakBlockQuest;
-import org.elementcraft.dailyQuests.quest.quests.KillMobQuest;
+import org.elementcraft.dailyQuests.manager.QuestManager;
+import org.elementcraft.dailyQuests.entity.quests.BreakBlockQuest;
+import org.elementcraft.dailyQuests.entity.quests.KillMobQuest;
 
 public final class DailyQuests extends JavaPlugin {
     private static DailyQuests instance;
@@ -39,16 +39,20 @@ public final class DailyQuests extends JavaPlugin {
 
 
         questManager.registerQuest(new KillMobQuest(
-                "kill_zombie", "Убей 5 зомби", 5, 100, EntityType.ZOMBIE
+                "kill_zombie", "Убей 5 зомби", 5, 200, Material.ZOMBIE_HEAD, EntityType.ZOMBIE
         ));
         questManager.registerQuest(new BreakBlockQuest(
-                "break_stone", "Сломай 10 булыжников", 10, 50, Material.COBBLESTONE
+                "break_stone", "Сломай 10 булыжников", 10, 200, Material.COBBLESTONE, Material.COBBLESTONE
+        ));
+
+        questManager.registerQuest(new BreakBlockQuest(
+                "break_stone", "Сломай 3 диорита", 3, 200, Material.DIORITE, Material.DIORITE
         ));
 
 
 
         this.liteCommands = LiteBukkitFactory.builder("DailyQuests")
-                .commands(new DailyCommand(this.questManager))
+                .commands(new DailyCommand())
                 .message(LiteBukkitMessages.PLAYER_ONLY, "&cOnly player can execute this command!")
                 .build();
 

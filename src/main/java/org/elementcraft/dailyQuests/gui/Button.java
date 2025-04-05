@@ -1,11 +1,14 @@
 package org.elementcraft.dailyQuests.gui;
 
+import jakarta.validation.constraints.Null;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -15,7 +18,17 @@ public class Button {
     private final ItemStack itemStack;
     private final Consumer<Player> onClick;
     private String title;
+    @Nullable
+    private List<String> description;
 
+
+    public Button(Material material, int slot, String title, List<String> description, Consumer<Player> onClick) {
+        this.itemStack = new ItemStack(material);
+        this.slot = slot;
+        this.onClick = onClick;
+        setTitle(title);
+        setDescription(description);
+    }
 
     public Button(Material material, int slot, String title, Consumer<Player> onClick) {
         this.itemStack = new ItemStack(material);
@@ -38,11 +51,25 @@ public class Button {
 
     public void setTitle(String title) {
         this.title = title;
-        System.out.println(title);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', title));
         itemStack.setItemMeta(itemMeta);
-        System.out.println(itemStack.getItemMeta().getDisplayName());
+    }
+
+    public @Nullable List<String> getDescription() {
+        return description;
+    }
+
+    public void setDescription(List<String> description) {
+        this.description = description;
+
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        List<String> lore = new ArrayList<>();
+        for(String line : description) {
+            lore.add(ChatColor.translateAlternateColorCodes('&', line));
+        }
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
     }
 
     public int getSlot() {

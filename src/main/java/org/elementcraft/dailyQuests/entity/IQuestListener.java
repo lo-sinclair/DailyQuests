@@ -1,4 +1,4 @@
-package org.elementcraft.dailyQuests.quest;
+package org.elementcraft.dailyQuests.entity;
 
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
