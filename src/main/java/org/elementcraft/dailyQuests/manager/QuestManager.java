@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.elementcraft.dailyQuests.db.QuestProgressEntity;
+import org.elementcraft.dailyQuests.db.QuestProgressRepository;
 import org.elementcraft.dailyQuests.entity.IQuest;
 import org.elementcraft.dailyQuests.entity.model.PlayerQuestData;
 
@@ -12,16 +14,51 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class QuestManager {
-
+    private final JavaPlugin plugin;
+    private final QuestProgressRepository progressRepository;
 
     private final Map<UUID, List<PlayerQuestData>> playerQuests = new HashMap<>();
     private final Map<String, IQuest> availableQuests = new HashMap<>();
 
-    private final JavaPlugin plugin;
-
-    public QuestManager(JavaPlugin plugin) {
+    public QuestManager(JavaPlugin plugin, QuestProgressRepository progressRepository) {
         this.plugin = plugin;
+        this.progressRepository = progressRepository;
     }
+
+    public void loadAllProgress() {
+        List<QuestProgressEntity> entities = progressRepository.loadAll();
+
+        for (QuestProgressEntity entity : entities) {
+            UUID playerId = entity.getPlayerId();
+            IQuest quest = getQuestById(entity.getQuestId());
+
+            if (quest != null) {
+                // Восстановить прогресс
+                quest.restoreProgress(playerId, entity.getProgress());
+
+                // Получаем список квестов игрока
+                List<PlayerQuestData> quests = playerQuests.get(playerId);
+                if (quests == null) {
+                    quests = new ArrayList<>();
+                    playerQuests.put(playerId, quests);
+                }
+
+                // Проверяем, нет ли уже такого квеста
+                boolean alreadyAdded = false;
+                for (PlayerQuestData data : quests) {
+                    if (data.getQuest().equals(quest)) {
+                        alreadyAdded = true;
+                        break;
+                    }
+                }
+
+                if (!alreadyAdded) {
+                    quests.add(new PlayerQuestData(quest, entity.getAssignedDate()));
+                }
+            }
+        }
+    }
+
 
     public void registerQuest(IQuest quest) {
         availableQuests.put(quest.getId(), quest);
@@ -77,7 +114,6 @@ public class QuestManager {
     }
 
 
-
     public void removeQuestFromPlayer(UUID playerId, IQuest quest) {
         List<PlayerQuestData> quests = playerQuests.get(playerId);
         if (quests != null) {
@@ -96,6 +132,11 @@ public class QuestManager {
     }
 
     public void takeReward(Player player, IQuest quest) {
+        if (!hasQuest(player.getUniqueId(), quest)) {
+            player.sendMessage("Ты уже получил награду.");
+            return;
+        }
+
         player.sendMessage("ТЫ ЗАБРАЛ НАГРАДУ");
         removeQuestFromPlayer(player.getUniqueId(), quest);
     }

@@ -46,6 +46,11 @@ public abstract class Quest implements IQuest{
         progress.remove(playerId);
     }
 
+    @Override
+    public void restoreProgress(UUID playerId, int value) {
+        progress.put(playerId, value);
+    }
+
     @Override public String getId() { return id; }
     @Override public String getDescription() { return description; }
     @Override public QuestType getType() { return type; }

@@ -21,10 +21,20 @@ dependencies {
     shadow("dev.rollczi:litecommands-bukkit:3.9.7")
 
     // Hibernate
-    implementation("org.hibernate:hibernate-core:6.3.1.Final")
+    implementation("org.hibernate.orm:hibernate-core:6.3.1.Final")
+
+    // JDBC-драйвер для MySQL
     implementation("mysql:mysql-connector-java:8.0.33")
+
+    // JPA API
     implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
+
+    // Валидация, если используешь @NotNull и т.п.
     implementation("jakarta.validation:jakarta.validation-api:3.0.2")
+
+    // Логгер (необязательно, но может помочь)
+    implementation("org.jboss.logging:jboss-logging:3.5.0.Final")
+    
 
     // SLF4J (логирование)
     implementation("org.slf4j:slf4j-api:2.0.9")

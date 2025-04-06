@@ -3,6 +3,7 @@ package org.elementcraft.dailyQuests;
 import dev.rollczi.litecommands.LiteCommands;
 import dev.rollczi.litecommands.bukkit.LiteBukkitFactory;
 import dev.rollczi.litecommands.bukkit.LiteBukkitMessages;
+import jakarta.persistence.EntityManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -10,6 +11,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.elementcraft.dailyQuests.cmd.DailyCommand;
+import org.elementcraft.dailyQuests.db.HibernateUtil;
+import org.elementcraft.dailyQuests.db.QuestProgressRepository;
 import org.elementcraft.dailyQuests.gui.MenuListener;
 import org.elementcraft.dailyQuests.manager.QuestManager;
 import org.elementcraft.dailyQuests.entity.quests.BreakBlockQuest;
@@ -20,6 +23,7 @@ public final class DailyQuests extends JavaPlugin {
 
     private LiteCommands<CommandSender> liteCommands;
     private QuestManager questManager;
+    private QuestProgressRepository progressRepository;
 
     @Override
     public void onEnable() {
@@ -35,9 +39,20 @@ public final class DailyQuests extends JavaPlugin {
 
         instance = this;
 
-        questManager = new QuestManager(this);
 
+        EntityManager entityManager;
+        try {
+            entityManager = HibernateUtil.getEntityManager();
+        } catch (Throwable t) {
+            getLogger().severe("Hibernate initialization failed: " + t.getMessage());
+            t.printStackTrace();
+            return;
+        }
+        progressRepository = new QuestProgressRepository(entityManager);
 
+        questManager = new QuestManager(this, progressRepository);
+
+        // Здесь загрузка из конфига
         questManager.registerQuest(new KillMobQuest(
                 "kill_zombie", "Убей 5 зомби", 5, 200, Material.ZOMBIE_HEAD, EntityType.ZOMBIE
         ));
@@ -48,8 +63,9 @@ public final class DailyQuests extends JavaPlugin {
         questManager.registerQuest(new BreakBlockQuest(
                 "break_stone", "Сломай 3 диорита", 3, 200, Material.DIORITE, Material.DIORITE
         ));
+        // ------------------
 
-
+        questManager.loadAllProgress();
 
         this.liteCommands = LiteBukkitFactory.builder("DailyQuests")
                 .commands(new DailyCommand())
@@ -59,9 +75,18 @@ public final class DailyQuests extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MenuListener(), this);
     }
 
+
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        if (progressRepository != null) {
+            progressRepository.close();
+        }
+        try {
+            HibernateUtil.shutdown();
+        } catch (Throwable t) {
+            getLogger().warning("Could not shut down Hibernate cleanly: " + t.getMessage());
+        }
+        super.onDisable();
     }
 
     public QuestManager getQuestManager() {

@@ -16,4 +16,5 @@ public interface IQuest {
     void progress(UUID playerId);
     int getProgress(UUID playerId);
     void resetProgress(UUID playerId);
+    void restoreProgress(UUID playerId, int value);
 }
