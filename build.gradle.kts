@@ -11,10 +11,13 @@ repositories {
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://oss.sonatype.org/content/groups/public/")
     maven("https://repo.panda-lang.org/releases")
+    maven("https://jitpack.io")
 }
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
+
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7")
 
     // LiteCommands (`implementation` + `shadow`)
     implementation("dev.rollczi:litecommands-bukkit:3.9.7")
@@ -32,7 +35,7 @@ dependencies {
     // Валидация, если используешь @NotNull и т.п.
     implementation("jakarta.validation:jakarta.validation-api:3.0.2")
 
-    // Логгер (необязательно, но может помочь)
+    // Логгер
     implementation("org.jboss.logging:jboss-logging:3.5.0.Final")
     
 
@@ -75,6 +78,7 @@ tasks.shadowJar {
 }
 
 tasks.register<Copy>("copyJar") {
+
     from(layout.buildDirectory.file("libs/${project.name}.jar"))
     into("/home/locb/_www/mc/mcd_1.16.5/plugins/")
     rename { "${project.name}.jar" }

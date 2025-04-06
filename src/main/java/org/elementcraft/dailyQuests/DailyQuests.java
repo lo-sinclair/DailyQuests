@@ -3,7 +3,6 @@ package org.elementcraft.dailyQuests;
 import dev.rollczi.litecommands.LiteCommands;
 import dev.rollczi.litecommands.bukkit.LiteBukkitFactory;
 import dev.rollczi.litecommands.bukkit.LiteBukkitMessages;
-import jakarta.persistence.EntityManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -14,9 +13,10 @@ import org.elementcraft.dailyQuests.cmd.DailyCommand;
 import org.elementcraft.dailyQuests.db.HibernateUtil;
 import org.elementcraft.dailyQuests.db.QuestProgressRepository;
 import org.elementcraft.dailyQuests.gui.MenuListener;
+import org.elementcraft.dailyQuests.manager.EconomyManager;
 import org.elementcraft.dailyQuests.manager.QuestManager;
-import org.elementcraft.dailyQuests.entity.quests.BreakBlockQuest;
-import org.elementcraft.dailyQuests.entity.quests.KillMobQuest;
+import org.elementcraft.dailyQuests.quest.quests.BreakBlockQuest;
+import org.elementcraft.dailyQuests.quest.quests.KillMobQuest;
 
 public final class DailyQuests extends JavaPlugin {
     private static DailyQuests instance;
@@ -40,17 +40,19 @@ public final class DailyQuests extends JavaPlugin {
         instance = this;
 
 
-        EntityManager entityManager;
+        /*EntityManager entityManager;
         try {
             entityManager = HibernateUtil.getEntityManager();
         } catch (Throwable t) {
             getLogger().severe("Hibernate initialization failed: " + t.getMessage());
             t.printStackTrace();
             return;
-        }
-        progressRepository = new QuestProgressRepository(entityManager);
+        }*/
+        //progressRepository = new QuestProgressRepository(entityManager);
 
-        questManager = new QuestManager(this, progressRepository);
+        //questManager = new QuestManager(this, progressRepository);
+        EconomyManager.init();
+        questManager = new QuestManager(this);
 
         // Здесь загрузка из конфига
         questManager.registerQuest(new KillMobQuest(
@@ -65,7 +67,7 @@ public final class DailyQuests extends JavaPlugin {
         ));
         // ------------------
 
-        questManager.loadAllProgress();
+        //questManager.loadAllProgress();
 
         this.liteCommands = LiteBukkitFactory.builder("DailyQuests")
                 .commands(new DailyCommand())

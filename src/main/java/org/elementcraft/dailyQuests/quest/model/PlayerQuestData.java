@@ -1,6 +1,6 @@
-package org.elementcraft.dailyQuests.entity.model;
+package org.elementcraft.dailyQuests.quest.model;
 
-import org.elementcraft.dailyQuests.entity.IQuest;
+import org.elementcraft.dailyQuests.quest.IQuest;
 
 import java.time.LocalDate;
 

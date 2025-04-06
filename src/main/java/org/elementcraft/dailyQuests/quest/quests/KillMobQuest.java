@@ -1,4 +1,4 @@
-package org.elementcraft.dailyQuests.entity.quests;
+package org.elementcraft.dailyQuests.quest.quests;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -7,13 +7,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.elementcraft.dailyQuests.entity.IQuestListener;
-import org.elementcraft.dailyQuests.entity.Quest;
-import org.elementcraft.dailyQuests.entity.QuestType;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import org.elementcraft.dailyQuests.quest.IQuestListener;
+import org.elementcraft.dailyQuests.quest.Quest;
+import org.elementcraft.dailyQuests.quest.QuestType;
 
 public class KillMobQuest extends Quest implements IQuestListener {
     private final EntityType targetMobType;

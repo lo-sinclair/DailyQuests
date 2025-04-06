@@ -1,4 +1,4 @@
-package org.elementcraft.dailyQuests.entity;
+package org.elementcraft.dailyQuests.quest;
 
 public enum QuestType {
     KILL_MOBS,

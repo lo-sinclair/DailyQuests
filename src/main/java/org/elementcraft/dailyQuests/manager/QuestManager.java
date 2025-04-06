@@ -4,10 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.elementcraft.dailyQuests.db.QuestProgressEntity;
-import org.elementcraft.dailyQuests.db.QuestProgressRepository;
-import org.elementcraft.dailyQuests.entity.IQuest;
-import org.elementcraft.dailyQuests.entity.model.PlayerQuestData;
+import org.elementcraft.dailyQuests.quest.IQuest;
+import org.elementcraft.dailyQuests.quest.model.PlayerQuestData;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -15,17 +13,21 @@ import java.util.stream.Collectors;
 
 public class QuestManager {
     private final JavaPlugin plugin;
-    private final QuestProgressRepository progressRepository;
+    //private final QuestProgressRepository progressRepository;
 
     private final Map<UUID, List<PlayerQuestData>> playerQuests = new HashMap<>();
     private final Map<String, IQuest> availableQuests = new HashMap<>();
 
-    public QuestManager(JavaPlugin plugin, QuestProgressRepository progressRepository) {
+    /*public QuestManager(JavaPlugin plugin, QuestProgressRepository progressRepository) {
         this.plugin = plugin;
         this.progressRepository = progressRepository;
+    }*/
+
+    public QuestManager(JavaPlugin plugin) {
+        this.plugin = plugin;
     }
 
-    public void loadAllProgress() {
+    /*public void loadAllProgress() {
         List<QuestProgressEntity> entities = progressRepository.loadAll();
 
         for (QuestProgressEntity entity : entities) {
@@ -57,7 +59,7 @@ public class QuestManager {
                 }
             }
         }
-    }
+    }*/
 
 
     public void registerQuest(IQuest quest) {
@@ -136,8 +138,8 @@ public class QuestManager {
             player.sendMessage("Ты уже получил награду.");
             return;
         }
-
-        player.sendMessage("ТЫ ЗАБРАЛ НАГРАДУ");
+        EconomyManager.giveMoney(player, quest.getReward());
+        player.sendMessage("Ты получил награду " + quest.getReward() + " золотых");
         removeQuestFromPlayer(player.getUniqueId(), quest);
     }
 }

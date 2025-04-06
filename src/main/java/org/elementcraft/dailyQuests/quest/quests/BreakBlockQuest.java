@@ -1,4 +1,4 @@
-package org.elementcraft.dailyQuests.entity.quests;
+package org.elementcraft.dailyQuests.quest.quests;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -7,11 +7,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.elementcraft.dailyQuests.entity.Quest;
-import org.elementcraft.dailyQuests.entity.QuestType;
+import org.elementcraft.dailyQuests.quest.Quest;
+import org.elementcraft.dailyQuests.quest.QuestType;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public class BreakBlockQuest extends Quest implements Listener {

@@ -1,4 +1,4 @@
-package org.elementcraft.dailyQuests.entity;
+package org.elementcraft.dailyQuests.quest;
 
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
