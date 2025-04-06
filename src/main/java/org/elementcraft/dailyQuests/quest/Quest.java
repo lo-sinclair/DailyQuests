@@ -72,4 +72,17 @@ public abstract class Quest implements IQuest{
     public int hashCode() {
         return id.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "Quest{" +
+                "id='" + id + '\'' +
+                ", description='" + description + '\'' +
+                ", type=" + type +
+                ", targetAmount=" + targetAmount +
+                ", reward=" + reward +
+                ", icon=" + icon +
+                ", progress=" + progress +
+                '}';
+    }
 }

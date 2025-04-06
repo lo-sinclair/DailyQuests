@@ -37,7 +37,6 @@ public class Button {
     }
 
     public void onClick(Player player) {
-        System.out.println(player);
         if (onClick == null) {
             throw new IllegalStateException("onClick not set for button in slot " + slot);
         }

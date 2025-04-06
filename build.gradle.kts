@@ -23,6 +23,9 @@ dependencies {
     implementation("dev.rollczi:litecommands-bukkit:3.9.7")
     shadow("dev.rollczi:litecommands-bukkit:3.9.7")
 
+    implementation("org.spongepowered:configurate-hocon:4.1.2")
+    shadow("org.spongepowered:configurate-hocon:4.1.2")
+
     // Hibernate
     implementation("org.hibernate.orm:hibernate-core:6.3.1.Final")
 
@@ -75,6 +78,7 @@ tasks.shadowJar {
     archiveVersion.set("")
 
     relocate("dev.rollczi.litecommands", "org.elementcraft.libs.litecommands")
+    relocate("org.spongepowered.configurate", "org.elementcraft.libs.configurate")
 }
 
 tasks.register<Copy>("copyJar") {

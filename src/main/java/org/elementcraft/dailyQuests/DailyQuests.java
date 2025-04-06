@@ -16,6 +16,7 @@ import org.elementcraft.dailyQuests.db.QuestProgressRepository;
 import org.elementcraft.dailyQuests.gui.MenuListener;
 import org.elementcraft.dailyQuests.manager.EconomyManager;
 import org.elementcraft.dailyQuests.manager.QuestManager;
+import org.elementcraft.dailyQuests.quest.QuestConfigLoader;
 import org.elementcraft.dailyQuests.quest.quests.BreakBlockQuest;
 import org.elementcraft.dailyQuests.quest.quests.KillMobQuest;
 
@@ -54,9 +55,10 @@ public final class DailyQuests extends JavaPlugin {
         //questManager = new QuestManager(this, progressRepository);
         EconomyManager.init();
         questManager = new QuestManager(this);
+        new QuestConfigLoader(questManager, getDataFolder()).load();
 
         // Здесь загрузка из конфига
-        questManager.registerQuest(new KillMobQuest(
+        /*questManager.registerQuest(new KillMobQuest(
                 "kill_zombie", "Убей 5 зомби", 5, 200, Material.ZOMBIE_HEAD, EntityType.ZOMBIE
         ));
         questManager.registerQuest(new BreakBlockQuest(
@@ -65,7 +67,7 @@ public final class DailyQuests extends JavaPlugin {
 
         questManager.registerQuest(new BreakBlockQuest(
                 "break_stone", "Сломай 3 диорита", 3, 200, Material.DIORITE, Material.DIORITE
-        ));
+        ));*/
         // ------------------
 
         //questManager.loadAllProgress();
