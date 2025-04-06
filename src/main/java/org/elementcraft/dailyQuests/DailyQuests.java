@@ -10,6 +10,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.elementcraft.dailyQuests.cmd.DailyCommand;
+import org.elementcraft.dailyQuests.cmd.ElementTestPluginCommand;
 import org.elementcraft.dailyQuests.db.HibernateUtil;
 import org.elementcraft.dailyQuests.db.QuestProgressRepository;
 import org.elementcraft.dailyQuests.gui.MenuListener;
@@ -70,7 +71,7 @@ public final class DailyQuests extends JavaPlugin {
         //questManager.loadAllProgress();
 
         this.liteCommands = LiteBukkitFactory.builder("DailyQuests")
-                .commands(new DailyCommand())
+                .commands(new DailyCommand(), new ElementTestPluginCommand(questManager))
                 .message(LiteBukkitMessages.PLAYER_ONLY, "&cOnly player can execute this command!")
                 .build();
 

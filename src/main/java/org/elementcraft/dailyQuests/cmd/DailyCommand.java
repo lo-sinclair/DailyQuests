@@ -55,11 +55,12 @@ public class DailyCommand {
         menu.show(player);
     }
 
+    //перенесется в Quest или View
     private List<String> activeQuestText(Quest quest, Player player) {
         ArrayList<String> text = new ArrayList<>();
         text.add("&f" + quest.getDescription());
         text.add("");
-        text.add("&eПрогресс: " + quest.getProgress(player.getUniqueId()) + " из" + quest.getTargetAmount());
+        text.add("&eПрогресс: " + quest.getProgress(player.getUniqueId()) + " из " + quest.getTargetAmount());
         text.add("&fНаграда: " + quest.getReward() + " золотых");
         return text;
     }
@@ -68,7 +69,7 @@ public class DailyCommand {
         ArrayList<String> text = new ArrayList<>();
         text.add("&f" + quest.getDescription());
         text.add("");
-        text.add("&aПрогресс: " + quest.getProgress(player.getUniqueId()) + " из" + quest.getTargetAmount());
+        text.add("&aПрогресс: " + quest.getProgress(player.getUniqueId()) + " из " + quest.getTargetAmount());
         text.add("&fНаграда: " + quest.getReward() + " золотых");
         text.add("&7Нажмите ЛКМ, чтобы забрать нагрду");
         return text;

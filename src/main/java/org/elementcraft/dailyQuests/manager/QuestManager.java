@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.elementcraft.dailyQuests.quest.IQuest;
+import org.elementcraft.dailyQuests.quest.Quest;
 import org.elementcraft.dailyQuests.quest.model.PlayerQuestData;
 
 import java.time.LocalDate;
@@ -61,6 +62,11 @@ public class QuestManager {
         }
     }*/
 
+    public void resetQuestsProgress(Player player) {
+        for( PlayerQuestData data  : playerQuests.get(player.getUniqueId()) ) {
+            data.getQuest().resetProgress(player.getUniqueId());
+        }
+    }
 
     public void registerQuest(IQuest quest) {
         availableQuests.put(quest.getId(), quest);
