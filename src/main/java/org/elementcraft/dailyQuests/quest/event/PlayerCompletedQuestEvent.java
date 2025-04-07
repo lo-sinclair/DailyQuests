@@ -3,7 +3,7 @@ package org.elementcraft.dailyQuests.quest.event;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.elementcraft.dailyQuests.IQuest;
+import org.elementcraft.dailyQuests.quest.IQuest;
 import org.jetbrains.annotations.NotNull;
 
 public class PlayerCompletedQuestEvent extends Event {

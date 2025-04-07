@@ -1,8 +1,7 @@
-package org.elementcraft.dailyQuests;
+package org.elementcraft.dailyQuests.quest;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.elementcraft.dailyQuests.quest.QuestType;
 
 import java.util.List;
 import java.util.UUID;

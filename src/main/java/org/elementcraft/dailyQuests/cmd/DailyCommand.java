@@ -5,7 +5,7 @@ import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.execute.Execute;
 import dev.rollczi.litecommands.annotations.permission.Permission;
 import org.bukkit.entity.Player;
-import org.elementcraft.dailyQuests.IQuest;
+import org.elementcraft.dailyQuests.quest.IQuest;
 import org.elementcraft.dailyQuests.quest.Quest;
 import org.elementcraft.dailyQuests.gui.Button;
 import org.elementcraft.dailyQuests.gui.Menu;
