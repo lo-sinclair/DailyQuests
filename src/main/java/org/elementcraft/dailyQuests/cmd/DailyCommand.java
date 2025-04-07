@@ -40,11 +40,11 @@ public class DailyCommand {
             Quest quest = (Quest) quests.get(i);
             if(!quest.isComplete(player.getUniqueId())) {
                 menu.addButton(new Button(quest.getIcon(), slots[i], "&eЕжедневное задание",
-                        activeQuestText(quest, player),  p -> {}));
+                        quest.activeQuestText(player), p -> {}));
             }
             else {
                 menu.addButton(new Button(quest.getIcon(), slots[i], "&aЕжедневное задание",
-                        completedQuestText(quest, player),  p -> {
+                        quest.activeQuestText(player),  p -> {
                     questManager.takeReward(p, quest);
                     player.closeInventory();
                 }));
@@ -55,11 +55,11 @@ public class DailyCommand {
         bonusQuest.ifPresent(quest -> {
             if(!quest.isComplete(player.getUniqueId())) {
                 menu.addButton(new Button(quest.getIcon(), 24, "&eБонусное задание",
-                        activeQuestText((Quest) quest, player), p -> {}));
+                        quest.activeQuestText(player), p -> {}));
             }
             else {
                 menu.addButton(new Button(quest.getIcon(), 24, "&aБонусное задание",
-                        completedQuestText((Quest) quest, player), p -> {
+                        quest.completedQuestText(player), p -> {
                     questManager.takeReward(p, quest);
                     player.closeInventory();
                 }));
@@ -67,26 +67,6 @@ public class DailyCommand {
         });
 
         menu.show(player);
-    }
-
-    //перенесется в Quest или View
-    private List<String> activeQuestText(Quest quest, Player player) {
-        ArrayList<String> text = new ArrayList<>();
-        text.add("&f" + quest.getDescription());
-        text.add("");
-        text.add("&eПрогресс: " + quest.getProgress(player.getUniqueId()) + " из " + quest.getTargetAmount());
-        text.add("&fНаграда: " + quest.getReward() + " золотых");
-        return text;
-    }
-
-    private List<String> completedQuestText(Quest quest, Player player) {
-        ArrayList<String> text = new ArrayList<>();
-        text.add("&f" + quest.getDescription());
-        text.add("");
-        text.add("&aПрогресс: " + quest.getProgress(player.getUniqueId()) + " из " + quest.getTargetAmount());
-        text.add("&fНаграда: " + quest.getReward() + " золотых");
-        text.add("&7Нажмите ЛКМ, чтобы забрать нагрду");
-        return text;
     }
 
 }

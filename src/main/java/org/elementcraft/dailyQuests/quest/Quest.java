@@ -7,9 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.elementcraft.dailyQuests.manager.QuestManager;
 import org.elementcraft.dailyQuests.quest.event.PlayerCompletedQuestEvent;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class Quest implements IQuest{
     protected final String id;
@@ -79,6 +77,27 @@ public abstract class Quest implements IQuest{
     }
 
     public abstract void register(JavaPlugin plugin);
+
+    @Override
+    public List<String> activeQuestText(Player player) {
+        ArrayList<String> text = new ArrayList<>();
+        text.add("&f" + getDescription());
+        text.add("");
+        text.add("&eПрогресс: " + getProgress(player.getUniqueId()) + " из " + getTargetAmount());
+        text.add("&fНаграда: " + getReward() + " золотых");
+        return text;
+    }
+
+    @Override
+    public List<String> completedQuestText(Player player) {
+        ArrayList<String> text = new ArrayList<>();
+        text.add("&f" + getDescription());
+        text.add("");
+        text.add("&aПрогресс: " + getProgress(player.getUniqueId()) + " из " + getTargetAmount());
+        text.add("&fНаграда: " + getReward() + " золотых");
+        text.add("&7Нажмите ЛКМ, чтобы забрать нагрду");
+        return text;
+    }
 
     public boolean equals(Object obj) {
         if (this == obj) return true;

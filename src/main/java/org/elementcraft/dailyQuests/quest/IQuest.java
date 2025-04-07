@@ -1,7 +1,9 @@
 package org.elementcraft.dailyQuests.quest;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface IQuest {
@@ -19,4 +21,6 @@ public interface IQuest {
     void resetProgress(UUID playerId);
     void restoreProgress(UUID playerId, int value);
 
+    List<String> activeQuestText(Player player);
+    List<String> completedQuestText(Player player);
 }

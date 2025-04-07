@@ -7,7 +7,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.elementcraft.dailyQuests.cmd.DailyCommand;
 import org.elementcraft.dailyQuests.cmd.ElementTestPluginCommand;
@@ -16,10 +15,8 @@ import org.elementcraft.dailyQuests.db.QuestProgressRepository;
 import org.elementcraft.dailyQuests.gui.MenuListener;
 import org.elementcraft.dailyQuests.manager.EconomyManager;
 import org.elementcraft.dailyQuests.manager.QuestManager;
-import org.elementcraft.dailyQuests.quest.QuestConfigLoader;
-import org.elementcraft.dailyQuests.quest.quests.BreakBlockQuest;
+import org.elementcraft.dailyQuests.quest.util.QuestConfigLoader;
 import org.elementcraft.dailyQuests.quest.quests.CompleteThreeQuestsQuest;
-import org.elementcraft.dailyQuests.quest.quests.KillMobQuest;
 
 public final class DailyQuests extends JavaPlugin {
     private static DailyQuests instance;

@@ -1,9 +1,10 @@
-package org.elementcraft.dailyQuests.quest;
+package org.elementcraft.dailyQuests.quest.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.elementcraft.dailyQuests.manager.QuestManager;
+import org.elementcraft.dailyQuests.quest.QuestType;
 import org.elementcraft.dailyQuests.quest.quests.BreakBlockQuest;
 import org.elementcraft.dailyQuests.quest.quests.KillMobQuest;
 import org.spongepowered.configurate.ConfigurationNode;
