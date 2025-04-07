@@ -4,12 +4,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.elementcraft.dailyQuests.IQuest;
 import org.elementcraft.dailyQuests.manager.QuestManager;
 import org.elementcraft.dailyQuests.quest.event.PlayerCompletedQuestEvent;
 
 import java.util.*;
 
-public abstract class Quest implements IQuest{
+public abstract class Quest implements IQuest {
     protected final String id;
     protected final String description;
     protected final QuestType type;

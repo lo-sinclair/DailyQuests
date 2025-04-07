@@ -15,7 +15,7 @@ import org.elementcraft.dailyQuests.db.QuestProgressRepository;
 import org.elementcraft.dailyQuests.gui.MenuListener;
 import org.elementcraft.dailyQuests.manager.EconomyManager;
 import org.elementcraft.dailyQuests.manager.QuestManager;
-import org.elementcraft.dailyQuests.quest.util.QuestConfigLoader;
+import org.elementcraft.dailyQuests.util.QuestConfigLoader;
 import org.elementcraft.dailyQuests.quest.quests.CompleteThreeQuestsQuest;
 
 public final class DailyQuests extends JavaPlugin {

@@ -1,4 +1,4 @@
-package org.elementcraft.dailyQuests.quest.util;
+package org.elementcraft.dailyQuests.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
