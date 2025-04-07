@@ -15,7 +15,7 @@ public class KillMobQuest extends Quest implements IQuestListener {
     private final EntityType targetMobType;
 
     public KillMobQuest(String id, String description, int targetAmount, int reward, Material icon, EntityType targetMobType) {
-        super(id, description, QuestType.KILL_MOBS, targetAmount, reward, icon);
+        super(id, description, QuestType.KILL_MOBS, targetAmount, reward, icon, true);
         this.targetMobType = targetMobType;
     }
 

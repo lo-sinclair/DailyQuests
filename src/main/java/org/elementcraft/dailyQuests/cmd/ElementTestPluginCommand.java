@@ -18,12 +18,16 @@ public class ElementTestPluginCommand {
     }
 
     @Execute(name = "reset")
-    void command(@Context CommandSender commandSender, @Arg Player player) {
+    void reset(@Context CommandSender commandSender, @Arg Player player) {
         questManager.resetQuestsProgress(player);
 
         commandSender.sendMessage("Прогроесс игорока сброшен");
     }
 
-
+    @Execute(name = "reload")
+    void reload(@Context CommandSender commandSender) {
+        //To do
+        commandSender.sendMessage("Reload config for DailyQuests");
+    }
 
 }

@@ -11,10 +11,12 @@ public interface IQuest {
     int getTargetAmount();
     int getReward();
     Material getIcon();
+    boolean isAssignable();
 
     boolean isComplete(UUID playerId);
     void progress(UUID playerId);
     int getProgress(UUID playerId);
     void resetProgress(UUID playerId);
     void restoreProgress(UUID playerId, int value);
+
 }

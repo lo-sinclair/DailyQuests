@@ -13,18 +13,20 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class QuestManager {
+    private static QuestManager instance;
     private final JavaPlugin plugin;
     //private final QuestProgressRepository progressRepository;
 
     private final Map<UUID, List<PlayerQuestData>> playerQuests = new HashMap<>();
     private final Map<String, IQuest> availableQuests = new HashMap<>();
+    private final Map<UUID, Map<LocalDate, Integer>> dailyCompletions = new HashMap<>();
 
     /*public QuestManager(JavaPlugin plugin, QuestProgressRepository progressRepository) {
         this.plugin = plugin;
         this.progressRepository = progressRepository;
     }*/
 
-    public QuestManager(JavaPlugin plugin) {
+    private QuestManager(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -85,17 +87,19 @@ public class QuestManager {
     }
 
 
-
     public List<IQuest> getOrAssignDailyQuests(UUID playerId) {
         List<PlayerQuestData> quests = playerQuests.get(playerId);
         LocalDate today = LocalDate.now();
 
+        List<IQuest> assignableQuests = availableQuests.values().stream()
+                .filter(q -> q instanceof Quest quest && quest.isAssignable())
+                .collect(Collectors.toList());
+
         // Нет квестов или старые
         if (quests == null || quests.isEmpty() || quests.stream().anyMatch(q -> !q.getAssignedDate().equals(today))) {
-            List<IQuest> available = new ArrayList<>(availableQuests.values());
-            Collections.shuffle(available);
+            Collections.shuffle(assignableQuests);
 
-            List<PlayerQuestData> newQuests = available.stream()
+            List<PlayerQuestData> newQuests = assignableQuests.stream()
                     .limit(2)
                     .map(q -> new PlayerQuestData(q, today))
                     .collect(Collectors.toList());
@@ -108,12 +112,12 @@ public class QuestManager {
         if (quests.size() == 1) {
             IQuest existingQuest = quests.get(0).getQuest();
 
-            List<IQuest> available = new ArrayList<>(availableQuests.values());
-            available.remove(existingQuest); // чтобы не дублировался
-            Collections.shuffle(available);
+            List<IQuest> filtered = new ArrayList<>(assignableQuests);
+            filtered.remove(existingQuest); // чтобы не дублировался
+            Collections.shuffle(filtered);
 
-            if (!available.isEmpty()) {
-                PlayerQuestData newQuest = new PlayerQuestData(available.get(0), today);
+            if (!filtered.isEmpty()) {
+                PlayerQuestData newQuest = new PlayerQuestData(filtered.get(0), today);
                 quests.add(newQuest);
             }
         }
@@ -121,6 +125,22 @@ public class QuestManager {
         return quests.stream().map(PlayerQuestData::getQuest).toList();
     }
 
+    public Optional<IQuest> getQuestOptionalById(String id) {
+        return Optional.ofNullable(availableQuests.get(id));
+    }
+
+    public int incrementDailyCompletions(UUID playerId) {
+        LocalDate today = LocalDate.now();
+        Map<LocalDate, Integer> dateMap = dailyCompletions.get(playerId);
+        if (dateMap == null) {
+            dateMap = new HashMap<>();
+            dailyCompletions.put(playerId, dateMap);
+        }
+
+        int newCount = dateMap.getOrDefault(today, 0) + 1;
+        dateMap.put(today, newCount);
+        return newCount;
+    }
 
     public void removeQuestFromPlayer(UUID playerId, IQuest quest) {
         List<PlayerQuestData> quests = playerQuests.get(playerId);
@@ -147,5 +167,15 @@ public class QuestManager {
         EconomyManager.giveMoney(player, quest.getReward());
         player.sendMessage("Ты получил награду " + quest.getReward() + " золотых");
         removeQuestFromPlayer(player.getUniqueId(), quest);
+    }
+
+    public static void init(JavaPlugin plugin) {
+        if (instance == null) {
+            instance = new QuestManager(plugin);
+        }
+    }
+
+    public static QuestManager getInstance() {
+        return instance;
     }
 }

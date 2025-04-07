@@ -16,7 +16,7 @@ public class BreakBlockQuest extends Quest implements Listener {
     private final Material targetBlockType; // null — любой блок
 
     public BreakBlockQuest(String id, String description, int targetAmount, int reward,  Material icon, Material targetBlockType) {
-        super(id, description, QuestType.BREAK_BLOCKS, targetAmount, reward, icon);
+        super(id, description, QuestType.BREAK_BLOCKS, targetAmount, reward, icon, true);
         this.targetBlockType = targetBlockType;
     }
 

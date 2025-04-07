@@ -15,6 +15,7 @@ import org.elementcraft.dailyQuests.manager.QuestManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Command(name = "daily")
@@ -24,7 +25,7 @@ public class DailyCommand {
     private final QuestManager questManager;
 
     public DailyCommand() {
-        this.questManager = DailyQuests.getInstance().getQuestManager();
+        this.questManager = QuestManager.getInstance();
     }
 
     @Execute
@@ -33,7 +34,6 @@ public class DailyCommand {
         List<IQuest> quests = questManager.getOrAssignDailyQuests(player.getUniqueId());
 
         Menu menu = new Menu("Quests", 45);
-
 
         int[] slots = {20, 22};
         for (int i = 0; i < slots.length; i++) {
@@ -51,7 +51,21 @@ public class DailyCommand {
             }
         }
 
-        menu.addButton(new Button(Material.GRASS_BLOCK, 24, "&eБонусное> задание", p -> {}));
+        Optional<IQuest> bonusQuest = questManager.getQuestOptionalById("bonus_quest");
+        bonusQuest.ifPresent(quest -> {
+            if(!quest.isComplete(player.getUniqueId())) {
+                menu.addButton(new Button(quest.getIcon(), 24, "&eБонусное задание",
+                        activeQuestText((Quest) quest, player), p -> {}));
+            }
+            else {
+                menu.addButton(new Button(quest.getIcon(), 24, "&aБонусное задание",
+                        completedQuestText((Quest) quest, player), p -> {
+                    questManager.takeReward(p, quest);
+                    player.closeInventory();
+                }));
+            }
+        });
+
         menu.show(player);
     }
 
