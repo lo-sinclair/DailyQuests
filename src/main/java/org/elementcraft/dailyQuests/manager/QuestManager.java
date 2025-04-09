@@ -4,6 +4,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.elementcraft.dailyQuests.db.QuestProgressEntity;
+import org.elementcraft.dailyQuests.db.QuestProgressId;
+import org.elementcraft.dailyQuests.db.QuestProgressRepository;
 import org.elementcraft.dailyQuests.quest.IQuest;
 import org.elementcraft.dailyQuests.quest.Quest;
 import org.elementcraft.dailyQuests.quest.model.PlayerQuestData;
@@ -15,22 +18,19 @@ import java.util.stream.Collectors;
 public class QuestManager {
     private static QuestManager instance;
     private final JavaPlugin plugin;
-    //private final QuestProgressRepository progressRepository;
+    private final QuestProgressRepository progressRepository;
 
     private final Map<UUID, List<PlayerQuestData>> playerQuests = new HashMap<>();
     private final Map<String, IQuest> availableQuests = new HashMap<>();
     private final Map<UUID, Map<LocalDate, Integer>> dailyCompletions = new HashMap<>();
 
-    /*public QuestManager(JavaPlugin plugin, QuestProgressRepository progressRepository) {
+
+    private QuestManager(JavaPlugin plugin, QuestProgressRepository progressRepository) {
         this.plugin = plugin;
         this.progressRepository = progressRepository;
-    }*/
-
-    private QuestManager(JavaPlugin plugin) {
-        this.plugin = plugin;
     }
 
-    /*public void loadAllProgress() {
+    public void loadAllProgress() {
         List<QuestProgressEntity> entities = progressRepository.loadAll();
 
         for (QuestProgressEntity entity : entities) {
@@ -62,7 +62,28 @@ public class QuestManager {
                 }
             }
         }
-    }*/
+    }
+
+    public void saveProgress(UUID playerId) {
+        List<PlayerQuestData> quests = playerQuests.get(playerId);
+        if (quests == null) return;
+
+        for (PlayerQuestData data : quests) {
+            IQuest quest = data.getQuest();
+            int progress = quest.getProgress(playerId);
+
+            QuestProgressEntity entity = new QuestProgressEntity(
+                    //new QuestProgressId(playerId, quest.getId()),
+                    playerId,
+                    quest.getId(),
+                    progress,
+                    data.getAssignedDate(),
+                    quest.isComplete(playerId)
+            );
+
+            progressRepository.save(entity);
+        }
+    }
 
     public void resetQuestsProgress(Player player) {
         for( PlayerQuestData data  : playerQuests.get(player.getUniqueId()) ) {
@@ -164,14 +185,17 @@ public class QuestManager {
             player.sendMessage("Ты уже получил награду.");
             return;
         }
+        saveProgress(player.getUniqueId());
         EconomyManager.giveMoney(player, quest.getReward());
         player.sendMessage("Ты получил награду " + quest.getReward() + " золотых");
         removeQuestFromPlayer(player.getUniqueId(), quest);
+
+        progressRepository.delete(player.getUniqueId(), quest.getId());
     }
 
-    public static void init(JavaPlugin plugin) {
+    public static void init(JavaPlugin plugin, QuestProgressRepository progressRepository) {
         if (instance == null) {
-            instance = new QuestManager(plugin);
+            instance = new QuestManager(plugin, progressRepository);
         }
     }
 

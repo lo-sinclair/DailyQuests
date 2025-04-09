@@ -55,6 +55,25 @@ public class QuestProgressRepository{
         }
     }
 
+    public void delete(UUID playerId, String questId) {
+        EntityTransaction tx = em.getTransaction();
+
+        try {
+            tx.begin();
+            QuestProgressId id = new QuestProgressId(playerId, questId);
+            QuestProgressEntity entity = em.find(QuestProgressEntity.class, id);
+            if (entity != null) {
+                em.remove(entity);
+            }
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+    }
+
     public void close() {
         if (em != null && em.isOpen()) {
             em.close();

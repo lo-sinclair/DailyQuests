@@ -37,6 +37,7 @@ public class QuestProgressEntity {
         this.completed = completed;
     }
 
+
     public UUID getPlayerId() {
         return playerId;
     }

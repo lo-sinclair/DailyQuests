@@ -13,6 +13,7 @@ import org.elementcraft.dailyQuests.cmd.ElementTestPluginCommand;
 import org.elementcraft.dailyQuests.db.HibernateUtil;
 import org.elementcraft.dailyQuests.db.QuestProgressRepository;
 import org.elementcraft.dailyQuests.gui.MenuListener;
+import org.elementcraft.dailyQuests.listener.PlayerListener;
 import org.elementcraft.dailyQuests.manager.EconomyManager;
 import org.elementcraft.dailyQuests.manager.QuestManager;
 import org.elementcraft.dailyQuests.util.QuestConfigLoader;
@@ -44,26 +45,29 @@ public final class DailyQuests extends JavaPlugin {
 
         EntityManager entityManager;
         try {
-            Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
+            //Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
             entityManager = HibernateUtil.getEntityManager();
         } catch (Throwable t) {
             getLogger().severe("Hibernate initialization failed: " + t.getMessage());
             t.printStackTrace();
             return;
         }
-        //progressRepository = new QuestProgressRepository(entityManager);
+        progressRepository = new QuestProgressRepository(entityManager);
 
-        //questManager = new QuestManager(this, progressRepository);
         EconomyManager.init();
-        QuestManager.init(this);
+
+        QuestManager.init(this, progressRepository);
         QuestManager questManager = QuestManager.getInstance();
+
         new QuestConfigLoader(questManager, getDataFolder()).load();
 
         questManager.registerQuest(new CompleteThreeQuestsQuest(
                 "bonus_quest", "Выполнить 3 ежедневных задания", 400, Material.GRASS_BLOCK
         ));
 
-        //questManager.loadAllProgress();
+
+
+        questManager.loadAllProgress();
 
         this.liteCommands = LiteBukkitFactory.builder("DailyQuests")
                 .commands(new DailyCommand(), new ElementTestPluginCommand(questManager))
@@ -71,6 +75,7 @@ public final class DailyQuests extends JavaPlugin {
                 .build();
 
         getServer().getPluginManager().registerEvents(new MenuListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerListener(questManager), this);
     }
 
 
@@ -84,6 +89,9 @@ public final class DailyQuests extends JavaPlugin {
         } catch (Throwable t) {
             getLogger().warning("Could not shut down Hibernate cleanly: " + t.getMessage());
         }
+        /*if (HibernateUtil.getEntityManagerFactory().isOpen()) {
+            HibernateUtil.getEntityManagerFactory().close();
+        }*/
         super.onDisable();
     }
 
