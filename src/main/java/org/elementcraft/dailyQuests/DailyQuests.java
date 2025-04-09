@@ -45,7 +45,6 @@ public final class DailyQuests extends JavaPlugin {
 
         EntityManager entityManager;
         try {
-            //Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
             entityManager = HibernateUtil.getEntityManager();
         } catch (Throwable t) {
             getLogger().severe("Hibernate initialization failed: " + t.getMessage());

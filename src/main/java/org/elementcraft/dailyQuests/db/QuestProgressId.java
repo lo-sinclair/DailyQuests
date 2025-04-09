@@ -2,15 +2,14 @@ package org.elementcraft.dailyQuests.db;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.UUID;
 
 public class QuestProgressId implements Serializable {
-    private UUID playerId;
+    private String playerId;
     private String questId;
 
     public QuestProgressId() {}
 
-    public QuestProgressId(UUID playerId, String questId) {
+    public QuestProgressId(String playerId, String questId) {
         this.playerId = playerId;
         this.questId = questId;
     }

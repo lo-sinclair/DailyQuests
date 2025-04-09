@@ -60,7 +60,7 @@ public class QuestProgressRepository{
 
         try {
             tx.begin();
-            QuestProgressId id = new QuestProgressId(playerId, questId);
+            QuestProgressId id = new QuestProgressId(playerId.toString(), questId);
             QuestProgressEntity entity = em.find(QuestProgressEntity.class, id);
             if (entity != null) {
                 em.remove(entity);

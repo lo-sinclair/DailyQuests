@@ -34,7 +34,7 @@ public class QuestManager {
         List<QuestProgressEntity> entities = progressRepository.loadAll();
 
         for (QuestProgressEntity entity : entities) {
-            UUID playerId = entity.getPlayerId();
+            UUID playerId = UUID.fromString(entity.getPlayerId());
             IQuest quest = getQuestById(entity.getQuestId());
 
             if (quest != null) {
@@ -73,8 +73,7 @@ public class QuestManager {
             int progress = quest.getProgress(playerId);
 
             QuestProgressEntity entity = new QuestProgressEntity(
-                    //new QuestProgressId(playerId, quest.getId()),
-                    playerId,
+                    playerId.toString(),
                     quest.getId(),
                     progress,
                     data.getAssignedDate(),
