@@ -18,6 +18,8 @@ import org.elementcraft.dailyQuests.manager.QuestManager;
 import org.elementcraft.dailyQuests.util.QuestConfigLoader;
 import org.elementcraft.dailyQuests.quest.quests.CompleteThreeQuestsQuest;
 
+import javax.persistence.EntityManager;
+
 public final class DailyQuests extends JavaPlugin {
     private static DailyQuests instance;
 
@@ -33,21 +35,22 @@ public final class DailyQuests extends JavaPlugin {
         console.sendMessage(ChatColor.GREEN + "| DailyQuests|");
         console.sendMessage(ChatColor.GREEN + "|~~~~~~~~~~~~|");
         console.sendMessage(ChatColor.GRAY + "test task for " + ChatColor.GOLD + "ElementCraft" + ChatColor.GRAY + " server");
-        console.sendMessage(ChatColor.GRAY + "[codded by locb_km with love \u2764]"); //with love \u2764"
+        console.sendMessage(ChatColor.GRAY + "[codded by locb_km]");
 
         console.sendMessage("\n");
 
         instance = this;
 
 
-        /*EntityManager entityManager;
+        EntityManager entityManager;
         try {
+            Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
             entityManager = HibernateUtil.getEntityManager();
         } catch (Throwable t) {
             getLogger().severe("Hibernate initialization failed: " + t.getMessage());
             t.printStackTrace();
             return;
-        }*/
+        }
         //progressRepository = new QuestProgressRepository(entityManager);
 
         //questManager = new QuestManager(this, progressRepository);

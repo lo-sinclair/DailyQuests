@@ -1,7 +1,6 @@
 package org.elementcraft.dailyQuests.db;
 
-import jakarta.persistence.*;
-
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -11,11 +10,11 @@ import java.util.UUID;
 public class QuestProgressEntity {
 
     @Id
-    @Column(name = "player_id", nullable = false)
+    @Column(name = "player_id", nullable = false, columnDefinition = "BINARY(16)")
     private UUID playerId;
 
     @Id
-    @Column(name = "quest_id", nullable = false)
+    @Column(name = "quest_id", nullable = false, length = 255)
     private String questId;
 
     @Column(name = "progress")
@@ -27,7 +26,8 @@ public class QuestProgressEntity {
     @Column(name = "completed")
     private boolean completed;
 
-    public QuestProgressEntity() {}
+    public QuestProgressEntity() {
+    }
 
     public QuestProgressEntity(UUID playerId, String questId, int progress, LocalDate assignedDate, boolean completed) {
         this.playerId = playerId;
@@ -36,7 +36,6 @@ public class QuestProgressEntity {
         this.assignedDate = assignedDate;
         this.completed = completed;
     }
-
 
     public UUID getPlayerId() {
         return playerId;

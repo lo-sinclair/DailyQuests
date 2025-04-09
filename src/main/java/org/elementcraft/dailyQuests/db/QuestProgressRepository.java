@@ -1,11 +1,8 @@
 package org.elementcraft.dailyQuests.db;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import java.util.List;
 import java.util.UUID;
 

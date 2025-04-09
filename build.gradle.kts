@@ -27,20 +27,13 @@ dependencies {
     shadow("org.spongepowered:configurate-hocon:4.1.2")
 
     // Hibernate
-    implementation("org.hibernate.orm:hibernate-core:6.3.1.Final")
-
-    // JDBC-драйвер для MySQL
+    implementation("org.hibernate:hibernate-core:5.6.9.Final")
+    //implementation("javax.persistence:javax.persistence-api:2.2")
     implementation("mysql:mysql-connector-java:8.0.33")
-
-    // JPA API
-    implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
-
     // Валидация, если используешь @NotNull и т.п.
-    implementation("jakarta.validation:jakarta.validation-api:3.0.2")
-
+    //implementation("jakarta.validation:jakarta.validation-api:3.0.2")
     // Логгер
     implementation("org.jboss.logging:jboss-logging:3.5.0.Final")
-    
 
     // SLF4J (логирование)
     implementation("org.slf4j:slf4j-api:2.0.9")
